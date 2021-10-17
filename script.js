@@ -30,6 +30,9 @@ class App extends CreateTask {
     // submit form - new task
     formTask.addEventListener('submit', this.addTask.bind(this));
 
+    // edit task
+    link.addEventListener('dblclick', this.editTask.bind(this));
+
     // remove task submit
     link.addEventListener('click', this.removeTask.bind(this));
 
@@ -80,7 +83,7 @@ class App extends CreateTask {
   alt="task-icon"
   style="width: 45px; height: auto"
 />
-<span class="ms-2">${value.task}</span>
+<span class="ms-2" data-name="${value.task}">${value.task}</span>
 </th>
 <td class="align-middle priority-class">
 <span class="badge ${value.color}">${value.priority}</span>
@@ -163,6 +166,18 @@ class App extends CreateTask {
       this.saveList();
 
       // Reload Page
+      location.reload();
+    }
+  }
+
+  editTask(e) {
+    if (e.target.classList.contains('ms-2')) {
+      const find = this.#TasksList.find(
+        task => task.task === e.target.dataset.name
+      );
+      const data = prompt('New Name Task');
+      find.task = data;
+      this.saveList();
       location.reload();
     }
   }
