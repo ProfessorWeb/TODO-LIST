@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
 /*Select Elements*/
-const body = document.querySelector('body');
-const formTask = document.querySelector('.form-task');
-const taskInput = document.querySelector('.task-input');
-const SelectPriority = document.querySelector('.form-select');
-const ListTasks = document.querySelector('.fw-normal');
-const link = document.querySelector('table');
+const body = document.querySelector("body");
+const formTask = document.querySelector(".form-task");
+const taskInput = document.querySelector(".task-input");
+const SelectPriority = document.querySelector(".form-select");
+const ListTasks = document.querySelector(".fw-normal");
+const link = document.querySelector("table");
 
 /*------Class CreateTask------*/
 class CreateTask {
@@ -19,25 +19,23 @@ class CreateTask {
 }
 
 /*------Class App------*/
-class App extends CreateTask {
+class App {
   #TasksList = [];
-  constructor(task, priority, color) {
-    super(task, priority, color);
-
+  constructor() {
     // get Data From LocalStorage
     this.getlist();
 
     // submit form - new task
-    formTask.addEventListener('submit', this.addTask.bind(this));
+    formTask.addEventListener("submit", this.addTask.bind(this));
 
     // edit task
-    link.addEventListener('dblclick', this.editTask.bind(this));
+    link.addEventListener("dblclick", this.editTask.bind(this));
 
     // remove task submit
-    link.addEventListener('click', this.removeTask.bind(this));
+    link.addEventListener("click", this.removeTask.bind(this));
 
     // Completed task submit
-    link.addEventListener('click', this.CompleteTask.bind(this));
+    link.addEventListener("click", this.CompleteTask.bind(this));
 
     // focus on taskinput
     taskInput.focus();
@@ -60,9 +58,9 @@ class App extends CreateTask {
       tasks = new CreateTask(task, priority);
 
       // color priority
-      if (tasks.priority === 'Low') tasks.color = 'bg-success';
-      if (tasks.priority === 'Normal') tasks.color = 'bg-primary';
-      if (tasks.priority === 'High') tasks.color = 'bg-danger';
+      if (tasks.priority === "Low") tasks.color = "bg-success";
+      if (tasks.priority === "Normal") tasks.color = "bg-primary";
+      if (tasks.priority === "High") tasks.color = "bg-danger";
 
       // push task to the #TaskList
       this.#TasksList.push(tasks);
@@ -98,23 +96,23 @@ class App extends CreateTask {
 </td>`;
 
     // insert html
-    ListTasks.insertAdjacentHTML('afterend', html);
+    ListTasks.insertAdjacentHTML("afterend", html);
 
     // clear input after submit
-    taskInput.value = '';
+    taskInput.value = "";
 
     // change input after submit
-    SelectPriority.value = 'Normal';
+    SelectPriority.value = "Normal";
   }
 
   saveList() {
     // Saves the data this.#TaskList[] {key,value}
-    localStorage.setItem('saveTask', JSON.stringify(this.#TasksList));
+    localStorage.setItem("saveTask", JSON.stringify(this.#TasksList));
   }
 
   getlist() {
     // get data From this.#TaskList[]
-    const data = JSON.parse(localStorage.getItem('saveTask'));
+    const data = JSON.parse(localStorage.getItem("saveTask"));
     // if data === null or underfind return
     if (!data) return;
 
@@ -122,7 +120,7 @@ class App extends CreateTask {
     this.#TasksList = data;
 
     // Here we loop array on #TasksList
-    this.#TasksList.forEach(data => this.showTaskList(data));
+    this.#TasksList.forEach((data) => this.showTaskList(data));
   }
 
   removeTask(e) {
@@ -130,11 +128,11 @@ class App extends CreateTask {
     const id = e.target;
 
     // Event delegation
-    if (id.classList.contains('remove')) {
-      const link = id.closest('h6');
+    if (id.classList.contains("remove")) {
+      const link = id.closest("h6");
 
       // find index TASK
-      const index = this.#TasksList.findIndex(i => i.id === +link.dataset.id);
+      const index = this.#TasksList.findIndex((i) => i.id === +link.dataset.id);
 
       // After We find index Delete it from the array this.#TasksList[]
       this.#TasksList.splice(index, 1);
@@ -152,15 +150,15 @@ class App extends CreateTask {
     const id = e.target;
 
     //// Event delegation
-    if (id.classList.contains('complete')) {
-      const link = id.closest('h6');
+    if (id.classList.contains("complete")) {
+      const link = id.closest("h6");
 
       // find Task as per id.
-      const task = this.#TasksList.find(i => i.id === +link.dataset.id);
+      const task = this.#TasksList.find((i) => i.id === +link.dataset.id);
 
       // The task was found. and we change value in object task correct
-      task.priority = 'complate';
-      task.color = 'bg-success';
+      task.priority = "complate";
+      task.color = "bg-success";
 
       // We need save it beacuse if we dont save. when we reload page task.priority and task.color dont chanche
       this.saveList();
@@ -171,11 +169,11 @@ class App extends CreateTask {
   }
 
   editTask(e) {
-    if (e.target.classList.contains('ms-2')) {
+    if (e.target.classList.contains("ms-2")) {
       const find = this.#TasksList.find(
-        task => task.task === e.target.dataset.name
+        (task) => task.task === e.target.dataset.name
       );
-      const data = prompt('New Name Task');
+      const data = prompt("New Name Task");
       find.task = data;
       this.saveList();
       location.reload();
